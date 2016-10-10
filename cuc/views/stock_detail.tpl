@@ -13,47 +13,67 @@
 	    <script src="js/three.min.js"></script>
     </head>
     <body>
-
-<script src="three.min.js"></script>
-<script>
-var main = function () {
-  var scene = new THREE.Scene();
- 
-  var width  = 600;
-  var height = 400;
-  var fov    = 60;
-  var aspect = width / height;
-  var near   = 1;
-  var far    = 1000;
-  var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-  camera.position.set( 0, 0, 50 );
- 
-  var renderer = new THREE.WebGLRenderer();
-  renderer.setSize( width, height );
-  document.body.appendChild( renderer.domElement );
- 
-  var directionalLight = new THREE.DirectionalLight( 0xffffff );
-  directionalLight.position.set( 0, 0.7, 0.7 );
-  scene.add( directionalLight );
- 
-  var geometry = new THREE.CubeGeometry( 30, 30, 30 );
-  var material = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
-  var mesh = new THREE.Mesh( geometry, material );
-  scene.add( mesh );
- 
-  ( function renderLoop () {
-    requestAnimationFrame( renderLoop );
-    mesh.rotation.set(
-      0,
-      mesh.rotation.y + .01,
-      mesh.rotation.z + .01
-    );
-    renderer.render( scene, camera );
-  } )();
-};
- 
-window.addEventListener( 'DOMContentLoaded', main, false );
-</script>
+	
+	<div id="stage"></div>
+	<script src="three.min.js"></script>
+	<script>
+	(function() {
+		'use strict';
+		
+		var scene;
+		var box;
+		var camera;
+		var renderer;
+		var width = 500;
+		var height = 250;
+		
+		scene = new THREE.Scene();
+		
+		var target_row = {{row}} - 1;
+		var target_col = {{col}} - 1;
+		var target_depth = {{depth}} - 1;
+		
+		for (var i = 0; i < 4; i++) {
+			for (var y = 0; y < 3; y++) {
+				for (var z = 0; z < 3; z++) {
+		
+					var material; 
+					
+					if ( i == target_col && y == target_row && z == target_depth) {
+						material = new THREE.MeshLambertMaterial({color: 0xff0000})
+					} else {
+						material = new THREE.MeshLambertMaterial({color: 0xF0F8FF, transparent: true, opacity: 0.2})
+					}
+					
+					box = new THREE.Mesh(
+						new THREE.BoxGeometry(50, 50, 50),
+						material
+					);		
+					
+					box.position.set(i * 50, y * 50, z * -50);
+					scene.add(box);
+				}
+			}
+		}
+		
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 0.7, 0.7 );
+		scene.add( directionalLight );
+		
+		camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+		camera.position.set(200, 200, 220);
+		camera.lookAt(scene.position);
+		
+		renderer = new THREE.WebGLRenderer({ antialias: true });
+		renderer.setSize(width, height);
+		renderer.setClearColor(0xefefef);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		document.getElementById('stage').appendChild(renderer.domElement);
+		
+		renderer.render(scene, camera);
+		
+	})();
+	</script>
  
     </body>
 </html>

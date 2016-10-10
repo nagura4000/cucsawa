@@ -172,7 +172,10 @@ def stock_view():
                       em.name,
                       im.name,
                       si.id,
-                      wm.name
+                      wm.name,
+                      si.row,
+                      si.col,
+                      si.depth
                   FROM production_info as pi 
                   JOIN production_planning as pp on (pi.id_production_planning = pp.id)
                   join employee_mst em on (pp.id_employee_mst = em.id)
@@ -226,7 +229,11 @@ def registere_stock():
 
 @route('/stock_detail', method='GET')
 def stock_detail():
-    return template('stock_detail')
+    row = request.query.get('row')
+    col = request.query.get('col')
+    depth = request.query.get('depth')
+    print(row)
+    return template('stock_detail', row=row, col=col, depth=depth)
 
 
 run (host='localhost', port=8080, debug=True)

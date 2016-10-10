@@ -35,8 +35,8 @@
 						<td>{{production_info[3]}}</td>
 						<td>{{production_info[4]}}</td>
 						% if production_info[5] is not None:
-							<td><a href=''>{{production_info[5]}}</a></td>
-							<td>{{production_info[6]}}</td>
+							<td><a href='/stock_detail?row={{production_info[7]}}&col={{production_info[8]}}&depth={{production_info[9]}}'>{{production_info[5]}}</a></td>
+							<td>{{production_info[6]}} [行={{production_info[7]}}] [列={{production_info[8]}}] [奥行={{production_info[9]}}]</td>
 						% else:
 							<td></td>
 							<td></td>

@@ -25,7 +25,7 @@
 		var camera;
 		var renderer;
 		var width = 500;
-		var height = 250;
+		var height = 300;
 		
 		scene = new THREE.Scene();
 		
@@ -61,7 +61,7 @@
 		scene.add( directionalLight );
 		
 		camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-		camera.position.set(200, 200, 220);
+		camera.position.set(220, 200, 250);
 		camera.lookAt(scene.position);
 		
 		renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -69,7 +69,7 @@
 		renderer.setClearColor(0xefefef);
 		renderer.setPixelRatio(window.devicePixelRatio);
 		document.getElementById('stage').appendChild(renderer.domElement);
-		
+
 		renderer.render(scene, camera);
 		
 	})();

@@ -78,11 +78,19 @@ def production():
                     mm.name,
                     im.name,
                     pp.production_number,
-                    pp.production_date 
+                    pp.production_date ,
+                    ifnull(pi.success_number, 0)
                 FROM production_planning as pp 
                 join employee_mst em on (pp.id_employee_mst = em.id)
                 join machine_mst mm on (pp.id_machine_mst = mm.id)
-                join item_mst as im on (pp.id_item_mst = im.id)"""
+                join item_mst as im on (pp.id_item_mst = im.id)
+                left join ( select     
+                                    pid.id_production_planning,
+                                    sum(pid.production_number) as success_number
+                            from production_info as pid 
+                            group by pid.id_production_planning
+                            ) as pi on  (pp.id = pi.id_production_planning)
+        """
   cur.execute(sql)                                                                                      
   production_planning = cur.fetchall()
   return template('production', rows=production_planning)
@@ -175,7 +183,9 @@ def stock_view():
                       wm.name,
                       si.row,
                       si.col,
-                      si.depth
+                      si.depth,
+                      si.instock_time,
+                      si.outstock_time
                   FROM production_info as pi 
                   JOIN production_planning as pp on (pi.id_production_planning = pp.id)
                   join employee_mst em on (pp.id_employee_mst = em.id)

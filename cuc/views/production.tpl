@@ -2,9 +2,11 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>生産実績</title>
 	    <!-- BootstrapのCSS読み込み -->
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
+	    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	    <!-- jQuery読み込み -->
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	    <!-- BootstrapのJS読み込み -->
@@ -13,17 +15,17 @@
     </head>
     <body>
     	<h3>生産計画</h3>
-    	<div class="container">
+    	<div class="table-responsive">
     		<table class="table table-striped table-bordered table-hover ">
     		    <thead>
 			      <tr>
-			      	<th>生産計画No</th>
-			        <th>社員名</th>
-			        <th>機械</th>
-			        <th>製品</th>
-			        <th>生産予定数</th>
-			        <th>生産実績数</th>
-			        <th>生産予定年月日</th>
+			      	<th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>生産計画No</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>社員名</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>機械</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>製品</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>生産予定数</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>生産実績数</p></th>
+			        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4"><p>生産予定年月日</p></th>
 			      </tr>
 			    </thead>
 			    <tbody>

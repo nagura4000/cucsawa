@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>生産実績</title>
 	    <!-- BootstrapのCSS読み込み -->
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +13,7 @@
     </head>
     <body>
     	<h3>生産計画</h3>
-    	<div class="container">
+    	<div class="table-responsive">
     		<table class="table table-striped table-bordered table-hover ">
     		    <thead>
 			      <tr>

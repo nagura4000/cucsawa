@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>在庫詳細</title>
 	    <!-- BootstrapのCSS読み込み -->
 	    <link href="css/bootstrap.min.css" rel="stylesheet">

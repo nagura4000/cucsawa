@@ -31,7 +31,7 @@ from bottle import redirect
 
 
 
-connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user='root', passwd='')
+connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user='root', passwd='root')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 @route('/css/<filename>')
@@ -247,4 +247,4 @@ def stock_detail():
 
 
 #run (host='localhost', port=8080, debug=True)
-run(host='0.0.0.0', port=8080)
+run(host='0.0.0.0', port=80)

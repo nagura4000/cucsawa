@@ -245,6 +245,10 @@ def stock_detail():
     print(row)
     return template('stock_detail', row=row, col=col, depth=depth)
 
+@route('/video', method='GET')
+def video():
+    print("aaa")
+    return template('video')
 
 #run (host='localhost', port=8080, debug=True)
 run(host='0.0.0.0', port=8080)

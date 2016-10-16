@@ -36,7 +36,7 @@
 		        </tbody>
 			</table>
 		</div>
-		
+
 		<h3>生産実績</h3>
     	<div class="container">
     		<table class="table table-striped table-bordered table-hover ">
@@ -51,7 +51,7 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-					
+
 					% for production_info in production_infos:
 					<tr>
 						<td><a href='/stock?infoId={{production_info[0]}}'>{{production_info[0]}}</a></td>
@@ -59,19 +59,19 @@
 						<td>{{production_info[2]}}</td>
 						<td>{{production_info[3]}}</td>
 						<td>{{production_info[4]}}</td>
-						
+
 						% if production_info[5] is not None:
 							<td>{{production_info[5]}}</td>
 						% else:
 							<td></td>
 						% end
-						
+
 					</tr>
 					% end
 		        </tbody>
 			</table>
 		</div>
-		
+
 		<div class="container">
 		    <form action="/production_detail" method="POST">
 		        <div class="form-group">
@@ -85,13 +85,13 @@
 		        <div class="form-group">
 		            <label>作業開始時刻</label>
 		            <input type="datetime-local" name="start_date" class="form-control">
-		        </div>		        
+		        </div>
 		        <div class="form-group">
 		            <label>作業完了時刻</label>
 		            <input type="datetime-local" name="end_date" class="form-control">
 		        </div>
 		        <input type="hidden" name="id_production_planning" value="{{production_planning[0]}}">
-		        <button type="submit">登録</button>
+		        <button type="submit" class="btn btn-primary btn-lg btn-block">登録</button>
 		    </form>
 		</div>
 

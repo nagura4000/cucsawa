@@ -31,7 +31,7 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-					
+
 					% for production_info in production_infos:
 					<tr>
 						<td>{{production_info[0]}}</td>
@@ -61,21 +61,21 @@
 		        </tbody>
 			</table>
 		</div>
-		
-		
 
-		
+
+
+
 		<h3>在庫登録</h3>
 		<div class="container">
 		    <form action="/stock" method="POST">
 		        <div class="form-group">
-		        
-	            <label>倉庫名</label>	
+
+	            <label>倉庫名</label>
 	            <select name="id_warehouse_mst" class="form-control">
 	            	% for warehouse in warehouses:
 	            	<option value="{{warehouse[0]}}">{{warehouse[1]}}</option>
 	            	% end
-	            </select>	
+	            </select>
 		        <div class="form-group">
 		            <label>列番号</label>
 		            <input type="number" name="col" class="form-control">
@@ -91,10 +91,10 @@
 		        <div class="form-group">
 		            <label>入庫日時</label>
 		            <input type="datetime-local" name="instock_time" class="form-control">
-		        </div> 
+		        </div>
 		        <input type="hidden" name="id_production_info" value="{{production_info[0]}}">
-		        <button type="submit">登録</button>
-		        
+		        <button type="submit" class="btn btn-primary btn-lg btn-block">登録</button>
+
 		    	</div>
 		    </form>
 		</div>

@@ -14,6 +14,8 @@ import time
 import urllib3.request
 import json
 from pit import Pit
+from pytz import timezone
+from datetime import datetime, timedelta
 # install(PgSQLPlugin('dbname=sawachi, user=cuc password='))
 
 # @route('/hello')
@@ -266,8 +268,11 @@ def temperature():
 def registere_temperature():
 
     temperature = request.query.get('temperature')
-    humidity = request.query.get('humidity')
-    update_time = time.strftime('%Y-%m-%d %H:%M:00')
+    out_temperature = request.query.get('humidity')
+    #update_time = time.strftime('%Y-%m-%d %H:%M:00')
+    now = datetime.now() + timedelta(hours=9)
+    #jst_now = timezone('Asia/Tokyo').localize(now)
+    update_time = now.strftime('%Y-%m-%d %H:%M:00')
     cur=connect.cursor()
     sql = """     insert into
                     temperature

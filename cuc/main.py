@@ -11,8 +11,9 @@ from bottle import static_file
 import mysql.connector
 from bottle import redirect
 import time
-import urllib.request
+import urllib3.request
 import json
+from pit import Pit
 # install(PgSQLPlugin('dbname=sawachi, user=cuc password='))
 
 # @route('/hello')
@@ -33,8 +34,6 @@ import json
 #   return template('hello', name=name)
 
 
-
-connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user='root', passwd='root')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 @route('/css/<filename>')
@@ -266,17 +265,6 @@ def temperature():
 @route('/put_temperature', method='GET')
 def registere_temperature():
 
-    #location = "Tokyo,jp"
-    lat = "35.741940"
-    lon = "139.906838"
-    mode = "json"
-    metric = "metric"
-    apikey = "a7a0c4494d0691013138ed27002a01b4"
-    url = "http://api.openweathermap.org/data/2.5/weather?lat={a}&lon={aa}&mode={b}&units={c}&APPID={d}".format(a=lat, aa=lon, b=mode, c=metric, d=apikey)
-    response = urllib.request.urlopen(url)
-    weather_json = json.loads(response.read().decode('utf8'))
-    out_temperature = weather_json['main']['temp']
-
     temperature = request.query.get('temperature')
     humidity = request.query.get('humidity')
     update_time = time.strftime('%Y-%m-%d %H:%M:00')
@@ -300,6 +288,11 @@ def registere_temperature():
     redirect('/temperature')
 
 
+idpass = Pit.get('label')
+username = idpass['username']
+passwd = idpass['password']
+#print (username + " " + passwd)
+connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user=username, passwd=passwd)
 
 #run (host='localhost', port=8080, debug=True)
 run(host='0.0.0.0', port=80)

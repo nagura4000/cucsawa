@@ -16,24 +16,7 @@ import json
 from pit import Pit
 from pytz import timezone
 from datetime import datetime, timedelta
-# install(PgSQLPlugin('dbname=sawachi, user=cuc password='))
-
-# @route('/hello')
-# def hello(db):
-#     c = db.execute('''SELECT * FROM client_mst''')
-#     result = c.fetchone()
-#     return template('hello', rows=result)
-
-# @route('/test')
-# def test():
-#   import mysql.connector
-#   connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user='root', passwd='')
-#
-#   cur=connect.cursor()
-#   cur.execute("SELECT * FROM client_mst")
-#   result = cur.fetchall()
-#   name = result[0][1]
-#   return template('hello', name=name)
+import logging
 
 
 
@@ -61,21 +44,28 @@ def font_dir(filename):
 
 @route('/employee')
 def employee():
-  cur=connect.cursor()
+  con = connect()
+  cur = con.cursor()
   cur.execute("SELECT * FROM employee_mst")
   result = cur.fetchall()
+  cur.close()
+  con.close()
   return template('employee', rows=result)
 
 @route('/planning')
 def planning():
-  cur=connect.cursor()
+  con = connect()
+  cur = con.cursor()
   cur.execute("SELECT * FROM employee_mst")
   employee = cur.fetchall()
+  cur.close()
+  con.close()
   return template('production_planning', rows=employee)
 
 @route('/production')
 def production():
-  cur=connect.cursor()
+  con = connect()
+  cur = con.cursor()
   sql = """     SELECT
                     pp.id,
                     em.name,
@@ -97,12 +87,15 @@ def production():
         """
   cur.execute(sql)
   production_planning = cur.fetchall()
+  cur.close()
+  con.close()
   return template('production', rows=production_planning)
 
 @route('/production_detail', method='GET')
 def production_detail():
     pralningid = request.query.get('planningId')
-    cur=connect.cursor()
+    con = connect()
+    cur = con.cursor()
     sql = """     SELECT
                       pp.id,
                       em.name,
@@ -139,6 +132,8 @@ def production_detail():
     cur.execute(sql)
     production_infos = cur.fetchall()
 
+    cur.close()
+    con.close()
     return template('production_detail', production_planning=production_planning[0], production_infos=production_infos)
 
 @route('/production_detail', method='POST')
@@ -148,7 +143,8 @@ def registere_detail():
     failure_number = request.forms.get('failure_number')
     start_date = request.forms.get('start_date')
     end_date = request.forms.get('end_date')
-    cur=connect.cursor()
+    con=connect().cursor()
+    cur=con.cursor()
     sql = """     insert into
                     production_info
                     (
@@ -168,14 +164,17 @@ def registere_detail():
     """.format(**vars());
     print(sql)
     cur.execute(sql)
-    connect.commit()
+    cru.commit()
+    cur.close()
+    con.close()
+
     redirect('/production_detail?planningId=' + id_production_planning)
 
 
 @route('/stock', method='GET')
 def stock_view():
     id_production_info = request.query.get('infoId')
-    cur=connect.cursor()
+    cur=connect().cursor()
     # 生産実績
     sql = """     SELECT
                       pi.id,
@@ -216,7 +215,8 @@ def registere_stock():
     col = request.forms.get('col')
     depth = request.forms.get('depth')
     instock_time = request.forms.get('instock_time')
-    cur=connect.cursor()
+    con=connect()
+    cur = con.cursor()
     sql = """     insert into
                     stock_info
                     (
@@ -238,7 +238,9 @@ def registere_stock():
     """.format(**vars());
     print(sql)
     cur.execute(sql)
-    connect.commit()
+    cur.commit()
+    cur.close()
+    con.close()
     redirect('/stock?infoId=' + id_production_info)
 
 @route('/stock_detail', method='GET')
@@ -256,24 +258,33 @@ def video():
 
 @route('/temperature')
 def temperature():
-  cur=connect.cursor()
+  logging.info("start get temperature")
+  con =connect()
+  cur= con.cursor()
   #cur.execute("SELECT * FROM temperature order by id desc;")
   cur.execute("SELECT * FROM temperature order by id desc limit 40;")
   #cur.execute("SELECT * FROM temperature order by id desc limit 20;")
 
   result = cur.fetchall()
-  return template('temperature', rows=result)
+  cur.close()
+  con.close()
+  logging.info("close db_connection")
+  logging.info("start set template")
+  view = template('temperature', rows=result)
+  logging.info("end set template")
+  return view
 
 @route('/put_temperature', method='GET')
 def registere_temperature():
-
+    logging.info("start put temperature")
     temperature = request.query.get('temperature')
     out_temperature = request.query.get('humidity')
     #update_time = time.strftime('%Y-%m-%d %H:%M:00')
     now = datetime.now() + timedelta(hours=9)
     #jst_now = timezone('Asia/Tokyo').localize(now)
     update_time = now.strftime('%Y-%m-%d %H:%M:00')
-    cur=connect.cursor()
+    con = connect()
+    cur = con.cursor()
     sql = """     insert into
                     temperature
                     (
@@ -287,17 +298,24 @@ def registere_temperature():
                         '{update_time}'
                     )
     """.format(**vars());
-    print(sql)
+    logging.info(sql)
     cur.execute(sql)
-    connect.commit()
-    redirect('/temperature')
+    con.commit()
+    cur.close()
+    con.close()
+    logging.info("close db_connection")
+    #redirect('/temperature')
 
+def connect():
+	logging.info("start get_db_connection")
+	idpass = Pit.get('label')
+	username = idpass['username']
+	passwd = idpass['password']
+	con = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user=username, passwd=passwd)
+	logging.info("end get_db_connection")
+	return con
 
-idpass = Pit.get('label')
-username = idpass['username']
-passwd = idpass['password']
-#print (username + " " + passwd)
-connect = mysql.connector.connect(db='sawachi', host='localhost', port=3306, user=username, passwd=passwd)
-
+log_fmt = '%(asctime)s- %(name)s - %(levelname)s - %(funcName)s - %(thread)d - %(message)s'
+logging.basicConfig(filename='/tmp/temperature.log',level=logging.DEBUG, format=log_fmt)
 #run (host='localhost', port=8080, debug=True)
 run(host='0.0.0.0', port=80)

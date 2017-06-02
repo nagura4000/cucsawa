@@ -50,27 +50,5 @@ var chart = new CanvasJS.Chart(stage, {
 });
 chart.render();
 		</script>
-<!--
-    	<div class="container">
-    		<table class="table table-striped table-bordered table-hover ">
-    		    <thead>
-			      <tr>
-			        <th>日時</th>
-			        <th>気温</th>
-			        <th>湿度</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    	% for row in rows:
-					<tr>
-						<td>{{row[3]}}</td>
-						<td>{{row[1]}}</td>
-						<td>{{row[2]}}</td>
-					</tr>
-		        	% end
-		        </tbody>
-			</table>
-		</div>
--->
     </body>
 </html>
